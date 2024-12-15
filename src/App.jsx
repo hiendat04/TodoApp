@@ -1,8 +1,9 @@
-import { useMemo, useRef, useState } from "react";
+import { useContext, useMemo, useRef, useState } from "react";
 import "./App.css";
 import TodoItem from "./components/TodoItem";
 import Sidebar from "./components/Sidebar";
 import FilterPanel from "./components/FilterPanel";
+import { AppContext } from "./context/AppProvider";
 
 function App() {
   const [todoList, setTodoList] = useState([
@@ -40,6 +41,8 @@ function App() {
 
   const [searchText, setSearchText] = useState('');
 
+  const {selectedCategoryId} = useContext(AppContext);
+
   const activeTodoItem = todoList.find((todo) => todo.id === activeTodoItemId);
 
   const handleCompleteCheckboxChange = (todoId) => {
@@ -74,6 +77,9 @@ function App() {
       // Check if search text is matched
       if(!todo.name.includes(searchText)) return false;
 
+      // Check if category is matched
+      if(selectedCategoryId && todo.category !== selectedCategoryId) return false;
+
       switch (selectedFilterId) {
         case "all":
           return true;
@@ -87,7 +93,7 @@ function App() {
           return true;
       }
     });
-  }, [selectedFilterId, todoList, searchText]);
+  }, [selectedFilterId, todoList, searchText, selectedCategoryId]);
 
   return (
     <div className="container">
