@@ -35,6 +35,8 @@ function App() {
 
   const [showSidebar, setShowSidebar] = useState(false);
 
+  const [searchText, setSearchText] = useState('');
+
   const activeTodoItem = todoList.find((todo) => todo.id === activeTodoItemId);
 
   const handleCompleteCheckboxChange = (todoId) => {
@@ -66,6 +68,9 @@ function App() {
 
   const filterTodos = useMemo(() => {
     return todoList.filter((todo) => {
+      // Check if search text is matched
+      if(!todo.name.includes(searchText)) return false;
+
       switch (selectedFilterId) {
         case "all":
           return true;
@@ -79,7 +84,7 @@ function App() {
           return true;
       }
     });
-  }, [selectedFilterId, todoList]);
+  }, [selectedFilterId, todoList, searchText]);
 
   return (
     <div className="container">
@@ -87,6 +92,8 @@ function App() {
         selectedFilterId={selectedFilterId}
         setSelectedFilterId={setSelectedFilterId}
         todoList={todoList}
+        searchText={searchText}
+        setSearchText={setSearchText}
       />
       <div className="main-content">
         <input
