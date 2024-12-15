@@ -1,29 +1,8 @@
 import { useMemo } from "react";
 import "./FilterPanel.css";
 import PropTypes from "prop-types";
-
-const FILTER_ITEMS = [
-  {
-    id: "all",
-    label: "All",
-    iconPath: "./public/inbox.png",
-  },
-  {
-    id: "important",
-    label: "Important",
-    iconPath: "./public/flag.png",
-  },
-  {
-    id: "completed",
-    label: "Completed",
-    iconPath: "./public/check.png",
-  },
-  {
-    id: "deleted",
-    label: "Deleted",
-    iconPath: "./public/delete.png",
-  },
-];
+import CategoryList from "./CategoryList";
+import FilterList from "./FilterList";
 
 const FilterPanel = ({
   selectedFilterId,
@@ -62,25 +41,8 @@ const FilterPanel = ({
           setSearchText(e.target.value);
         }}
       />
-      <div className="filter-container">
-        {FILTER_ITEMS.map((filterItem) => {
-          return (
-            <div
-              key={filterItem.id}
-              className={`filter-item ${
-                filterItem.id === selectedFilterId ? "selected" : ""
-              }`}
-              onClick={() => setSelectedFilterId(filterItem.id)}
-            >
-              <div className="filter-name">
-                <img src={filterItem.iconPath} />
-                <p>{filterItem.label}</p>
-              </div>
-              <p>{countByFilterType[filterItem.id]}</p>
-            </div>
-          );
-        })}
-      </div>
+      <FilterList selectedFilterId={selectedFilterId} setSelectedFilterId={setSelectedFilterId} countByFilterType={countByFilterType} />
+      <CategoryList/>
     </div>
   );
 };
