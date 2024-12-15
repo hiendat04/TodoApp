@@ -72,11 +72,11 @@ const Sidebar = (props) => {
 
 Sidebar.propTypes = {
   setShowSidebar: PropTypes.func,
-  todoItem: {
+  todoItem: PropTypes.shape ({
     name: PropTypes.string,
     isImportant: PropTypes.bool,
     isCompleted: PropTypes.bool,
-  },
+  }),
   handleTodoItemChange: PropTypes.func,
 };
 

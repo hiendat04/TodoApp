@@ -24,7 +24,25 @@ const FILTER_ITEMS = [
   },
 ];
 
-const FilterPanel = ({ selectedFilterId, setSelectedFilterId }) => {
+const FilterPanel = ({ selectedFilterId, setSelectedFilterId, todoList }) => {
+  // Count todo item by filter type
+  const countByFilterType = todoList.reduce(
+    (acc, cur) => {
+      let newAcc = { ...acc };
+      if (cur.isCompleted) {
+        newAcc = { ...newAcc, completed: newAcc.completed + 1 };
+      }
+      if (cur.isImportant) {
+        newAcc = { ...newAcc, important: newAcc.important + 1 };
+      }
+      if (cur.isDeleted) {
+        newAcc = { ...newAcc, deleted: newAcc.deleted + 1 };
+      }
+      return newAcc;
+    },
+    { all: todoList.length, important: 0, completed: 0, deleted: 0 }
+  );
+
   return (
     <div className="filter-panel">
       <input name="search-text" placeholder="Search" />
@@ -42,7 +60,7 @@ const FilterPanel = ({ selectedFilterId, setSelectedFilterId }) => {
                 <img src={filterItem.iconPath} />
                 <p>{filterItem.label}</p>
               </div>
-              <p>22</p>
+              <p>{countByFilterType[filterItem.id]}</p>
             </div>
           );
         })}
@@ -54,6 +72,7 @@ const FilterPanel = ({ selectedFilterId, setSelectedFilterId }) => {
 FilterPanel.propTypes = {
   selectedFilterId: PropTypes.string,
   setSelectedFilterId: PropTypes.func,
+  todoList: PropTypes.array,
 };
 
 export default FilterPanel;
