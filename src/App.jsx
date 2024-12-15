@@ -79,7 +79,7 @@ function App() {
           return true;
       }
     })
-    .map((todo, index) => {
+    .map((todo) => {
       return (
         <TodoItem
           id={todo.id}

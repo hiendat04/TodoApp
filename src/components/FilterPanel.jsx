@@ -1,5 +1,5 @@
-import React, { useState } from "react";
 import "./FilterPanel.css";
+import PropTypes from "prop-types";
 
 const FILTER_ITEMS = [
   {
@@ -24,8 +24,7 @@ const FILTER_ITEMS = [
   },
 ];
 
-const FilterPanel = ({selectedFilterId, setSelectedFilterId}) => {
-
+const FilterPanel = ({ selectedFilterId, setSelectedFilterId }) => {
   return (
     <div className="filter-panel">
       <input name="search-text" placeholder="Search" />
@@ -33,6 +32,7 @@ const FilterPanel = ({selectedFilterId, setSelectedFilterId}) => {
         {FILTER_ITEMS.map((filterItem) => {
           return (
             <div
+              key={filterItem.id}
               className={`filter-item ${
                 filterItem.id === selectedFilterId ? "selected" : ""
               }`}
@@ -49,6 +49,11 @@ const FilterPanel = ({selectedFilterId, setSelectedFilterId}) => {
       </div>
     </div>
   );
+};
+
+FilterPanel.propTypes = {
+  selectedFilterId: PropTypes.string,
+  setSelectedFilterId: PropTypes.func,
 };
 
 export default FilterPanel;

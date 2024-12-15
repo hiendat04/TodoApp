@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import PropTypes from "prop-types";
 import "./Sidebar.css";
+import { useState } from "react";
 
 const Sidebar = (props) => {
   const data = props.todoItem;
@@ -8,10 +9,10 @@ const Sidebar = (props) => {
   const [isCompleted, setIsCompleted] = useState(data.isCompleted);
 
   const handleSave = () => {
-    const newTodo = {...data, name, isImportant, isCompleted} //Override the information of the current to do item to update
+    const newTodo = { ...data, name, isImportant, isCompleted }; //Override the information of the current to do item to update
     props.handleTodoItemChange(newTodo);
     props.setShowSidebar(false);
-  }
+  };
 
   return (
     <div className="sidebar">
@@ -24,9 +25,9 @@ const Sidebar = (props) => {
             name="name"
             value={name}
             onChange={(e) => {
-                console.log(e.target.value);
-                setName(e.target.value);
-                // props.handleTodoNameChange(data.id, e.target.value);
+              console.log(e.target.value);
+              setName(e.target.value);
+              // props.handleTodoNameChange(data.id, e.target.value);
             }}
           />
         </div>
@@ -38,7 +39,7 @@ const Sidebar = (props) => {
             name="isImportant"
             checked={isImportant}
             onChange={() => {
-                setIsImportant(!isImportant); 
+              setIsImportant(!isImportant);
             }}
           />
         </div>
@@ -50,19 +51,33 @@ const Sidebar = (props) => {
             name="isCompleted"
             checked={isCompleted}
             onChange={() => {
-                setIsCompleted(!isCompleted);
+              setIsCompleted(!isCompleted);
             }}
           />
         </div>
       </form>
       <div className="sb-footer">
         <button onClick={handleSave}>Save</button>
-        <button onClick={() => {
-            props.setShowSidebar(false)
-        }}>Cancel</button>
+        <button
+          onClick={() => {
+            props.setShowSidebar(false);
+          }}
+        >
+          Cancel
+        </button>
       </div>
     </div>
   );
+};
+
+Sidebar.propTypes = {
+  setShowSidebar: PropTypes.func,
+  todoItem: {
+    name: PropTypes.string,
+    isImportant: PropTypes.bool,
+    isCompleted: PropTypes.bool,
+  },
+  handleTodoItemChange: PropTypes.func,
 };
 
 export default Sidebar;
