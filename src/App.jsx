@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import "./App.css";
 import TodoItem from "./components/TodoItem";
 import Sidebar from "./components/Sidebar";
@@ -7,21 +7,21 @@ import FilterPanel from "./components/FilterPanel";
 function App() {
   const [todoList, setTodoList] = useState([
     {
-      id: '1',
+      id: "1",
       name: "Di hoc them",
       isImportant: false,
       isCompleted: false,
       isDeleted: false,
     },
     {
-      id: '2',
+      id: "2",
       name: "Di tap gym",
       isImportant: true,
       isCompleted: true,
       isDeleted: false,
     },
     {
-      id: '3',
+      id: "3",
       name: "Di hoc code",
       isImportant: false,
       isCompleted: false,
@@ -64,8 +64,8 @@ function App() {
 
   const inputRef = useRef();
 
-  const filterTodos = todoList
-    .filter((todo) => {
+  const filterTodos = useMemo(() => {
+    return todoList.filter((todo) => {
       switch (selectedFilterId) {
         case "all":
           return true;
@@ -78,20 +78,8 @@ function App() {
         default:
           return true;
       }
-    })
-    .map((todo) => {
-      return (
-        <TodoItem
-          id={todo.id}
-          name={todo.name}
-          key={todo.id}
-          isImportant={todo.isImportant}
-          isCompleted={todo.isCompleted}
-          handleCompleteCheckboxChange={handleCompleteCheckboxChange}
-          handleTodoItemClick={handleTodoItemClick}
-        />
-      );
     });
+  }, [selectedFilterId, todoList]);
 
   return (
     <div className="container">
@@ -124,7 +112,21 @@ function App() {
             }
           }}
         />
-        <div>{filterTodos}</div>
+        <div>
+          {filterTodos.map((todo) => {
+            return (
+              <TodoItem
+                id={todo.id}
+                name={todo.name}
+                key={todo.id}
+                isImportant={todo.isImportant}
+                isCompleted={todo.isCompleted}
+                handleCompleteCheckboxChange={handleCompleteCheckboxChange}
+                handleTodoItemClick={handleTodoItemClick}
+              />
+            );
+          })}
+        </div>
         {showSidebar && (
           <Sidebar
             key={activeTodoItemId} // Remove the current state and re-render the new state of new to do item
