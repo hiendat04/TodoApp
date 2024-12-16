@@ -1,35 +1,13 @@
-import { useMemo } from "react";
+
 import "./FilterPanel.css";
 import PropTypes from "prop-types";
 import CategoryList from "./CategoryList";
 import FilterList from "./FilterList";
+import { useAppContext } from "../context/AppProvider";
 
-const FilterPanel = ({
-  selectedFilterId,
-  setSelectedFilterId,
-  todoList,
-  searchText,
-  setSearchText,
-}) => {
+const FilterPanel = () => {
+  const { searchText, setSearchText } = useAppContext();
   // Count todo item by filter type
-  const countByFilterType = useMemo(() => {
-    return todoList.reduce(
-      (acc, cur) => {
-        let newAcc = { ...acc };
-        if (cur.isCompleted) {
-          newAcc = { ...newAcc, completed: newAcc.completed + 1 };
-        }
-        if (cur.isImportant) {
-          newAcc = { ...newAcc, important: newAcc.important + 1 };
-        }
-        if (cur.isDeleted) {
-          newAcc = { ...newAcc, deleted: newAcc.deleted + 1 };
-        }
-        return newAcc;
-      },
-      { all: todoList.length, important: 0, completed: 0, deleted: 0 }
-    );
-  }, [todoList]);
 
   return (
     <div className="filter-panel">
@@ -41,7 +19,7 @@ const FilterPanel = ({
           setSearchText(e.target.value);
         }}
       />
-      <FilterList selectedFilterId={selectedFilterId} setSelectedFilterId={setSelectedFilterId} countByFilterType={countByFilterType} />
+      <FilterList />
       <CategoryList/>
     </div>
   );
@@ -50,9 +28,8 @@ const FilterPanel = ({
 FilterPanel.propTypes = {
   selectedFilterId: PropTypes.string,
   setSelectedFilterId: PropTypes.func,
-  todoList: PropTypes.array,
   searchText: PropTypes.string,
-  setSearchText: PropTypes.func
+  setSearchText: PropTypes.func,
 };
 
 export default FilterPanel;

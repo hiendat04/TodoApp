@@ -1,10 +1,7 @@
 import PropTypes from "prop-types";
+import { useAppContext } from "../context/AppProvider";
 
-const FilterList = ({
-  selectedFilterId,
-  setSelectedFilterId,
-  countByFilterType,
-}) => {
+const FilterList = () => {
   const FILTER_ITEMS = [
     {
       id: "all",
@@ -27,6 +24,8 @@ const FilterList = ({
       iconPath: "./delete.png",
     },
   ];
+  const { selectedFilterId, setSelectedFilterId, countByFilterType } = useAppContext();
+    
   return (
     <div className="filter-container">
       {FILTER_ITEMS.map((filterItem) => {

@@ -2,18 +2,26 @@ import PropTypes from "prop-types";
 import "./Sidebar.css";
 import { CATEGORY_ITEMS } from "./Constant";
 import { useState } from "react";
+import { useAppContext } from "../context/AppProvider";
 
-const Sidebar = (props) => {
-  const data = props.todoItem;
-  const [name, setName] = useState(data.name);
-  const [isImportant, setIsImportant] = useState(data.isImportant);
-  const [isCompleted, setIsCompleted] = useState(data.isCompleted);
-  const [category, setCategory] = useState(data.category);
+const Sidebar = () => {
+  const { activeTodoItem, handleTodoItemChange, setShowSidebar } = useAppContext();
+
+  const [name, setName] = useState(activeTodoItem.name);
+  const [isImportant, setIsImportant] = useState(activeTodoItem.isImportant);
+  const [isCompleted, setIsCompleted] = useState(activeTodoItem.isCompleted);
+  const [category, setCategory] = useState(activeTodoItem.category);
 
   const handleSave = () => {
-    const newTodo = { ...data, name, isImportant, isCompleted, category }; //Override the information of the current to do item to update
-    props.handleTodoItemChange(newTodo);
-    props.setShowSidebar(false);
+    const newTodo = {
+      ...activeTodoItem,
+      name,
+      isImportant,
+      isCompleted,
+      category,
+    }; //Override the information of the current to do item to update
+    handleTodoItemChange(newTodo);
+    setShowSidebar(false);
   };
 
   return (
@@ -80,7 +88,7 @@ const Sidebar = (props) => {
         <button onClick={handleSave}>Save</button>
         <button
           onClick={() => {
-            props.setShowSidebar(false);
+            setShowSidebar(false);
           }}
         >
           Cancel
